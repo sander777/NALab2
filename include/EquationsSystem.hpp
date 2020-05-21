@@ -4,6 +4,8 @@
 #include "Matrix.hpp"
 #include "EquationsSystem.hpp"
 
+#define eps 0.00001
+
 class EquationsSystem {
   private:
     Matrix _A;
@@ -20,5 +22,6 @@ class EquationsSystem {
 };
 
 Matrix& thomas(const EquationsSystem&);
-
+Matrix& gauss(const EquationsSystem&);
+Matrix& jacobi(const EquationsSystem&, bool display);
 #endif

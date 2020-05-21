@@ -1,7 +1,7 @@
 #ifndef _MATRIX_HPP_
 #define _MATRIX_HPP_
 
-#define ALIGN_SIZE 10
+#define ALIGN_SIZE 16
 
 class Matrix {
   private:
@@ -12,7 +12,7 @@ class Matrix {
     Matrix();
     Matrix(int, int);
     Matrix(const Matrix &);
-    Matrix(const double[], int, int);
+    Matrix(double*, int, int);
     double *operator[](int);
     const Matrix &operator*(const Matrix &);
     const Matrix &operator*=(const Matrix &);
@@ -28,5 +28,7 @@ class Matrix {
 Matrix &randomMatrix(int, int);
 Matrix &transpose(const Matrix &);
 Matrix &cholesky(const Matrix &);
-
+Matrix &inverse(const Matrix &);
+double conditionNumber(const Matrix &);
+double norm(const Matrix &);
 #endif

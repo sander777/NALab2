@@ -7,6 +7,10 @@
 #include <iostream>
 #include <random>
 
+double _abs(double a) {
+    return (a < 0) ? a * -1: a;
+}
+
 Matrix::Matrix() { _matrix = new double *[1]; }
 
 Matrix::Matrix(int n, int m) {
@@ -31,7 +35,7 @@ Matrix::Matrix(const Matrix &copy) {
     }
 }
 
-Matrix::Matrix(const double arr[], int n, int m) {
+Matrix::Matrix(double *arr, int n, int m) {
     this->_matrix = new double *[m];
     for (int i = 0; i < m; i++)
         this->_matrix[i] = new double[n]{};
@@ -166,5 +170,48 @@ Matrix &cholesky(const Matrix &mx) {
 
     return *result;
 }
+
+double norm(const Matrix &mx) {
+    double max = 0;
+    for (int i = 0; i < mx.getM(); i++) {
+        double temp = 0;
+        for (int j = 0; j < mx.getM(); j++) {
+            temp += _abs(mx.at(i, j));
+        }
+        if (temp > max) {
+            max = temp;
+        }
+    }
+    return max;
+}
+
+Matrix &inverse(const Matrix &mx) {
+    int n = mx.getN();
+    Matrix a(mx);
+    Matrix &ia = *(new Matrix(n, n));
+    for (int i = 0; i < n; i++) {
+        ia[i][i] = 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        double d = a[i][i];
+        for (int j = 0; j < n; j++) {
+            a[i][j] /= d;
+            ia[i][j] /= d;
+        }
+        for (int j = 0; j < n; j++) {
+            if (j == i)
+                continue;
+            double mult = a[j][i];
+            for (int k = 0; k < n; k++) {
+                a[j][k] -= a[i][k] * mult;
+                ia[j][k] -= ia[i][k] * mult;
+            }
+        }
+    }
+    return ia;
+}
+
+double conditionNumber(const Matrix &mx) { return norm(mx) * norm(inverse(mx)); }
 
 #endif
