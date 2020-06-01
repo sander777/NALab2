@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     Matrix a = cholesky(choleskyTestMatrix);
     a.print();
     std::cout << "inverse(A): \n";
-    inverse(choleskyTestMatrix).print();
+    choleskyInverse(choleskyTestMatrix, 10).print();
     std::cout << '\n';
     double det = 1;
     for (int i = 0; i < a.getN(); i++) {
@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
     EquationsSystem thomasTestEquation(thomasTestMatrixA, thomasTestMatrixB);
     std::cout << "A|b:\n";
     thomasTestEquation.print();
+    printf("||A|| = %f\n||A^-1|| =%f\n", norm(thomasTestMatrixA), norm(inverse(thomasTestMatrixA)));
     std::cout << "Condition number of A: " << conditionNumber(thomasTestMatrixA) << '\n';
 	system("pause");
     std::cout << "x:\n";

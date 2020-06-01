@@ -7,9 +7,7 @@
 #include <iostream>
 #include <random>
 
-double _abs(double a) {
-    return (a < 0) ? a * -1: a;
-}
+double _abs(double a) { return (a < 0) ? a * -1 : a; }
 
 Matrix::Matrix() { _matrix = new double *[1]; }
 
@@ -212,6 +210,38 @@ Matrix &inverse(const Matrix &mx) {
     return ia;
 }
 
-double conditionNumber(const Matrix &mx) { return norm(mx) * norm(inverse(mx)); }
+Matrix &choleskyInverse(const Matrix &mx, int r) {
+    int n = mx.getN();
+    Matrix L = cholesky(mx);
+    Matrix U = transpose(L);
+    Matrix y = Matrix(n, n);
+    Matrix &x = (*(new Matrix(n, n)));
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            double e = (i == j) ? 1 : 0;
+            for (int k = 0; k < j; k++) {
+                e -= y[k][i] * L.at(j, k);
+            }
+            y[j][i] = e / L.at(j, j);
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = n - 1; j >= 0; j--) {
+            double e = y.at(j, i);
+            for (int k = n - 1; k > j ; k--) {
+                e -= x[k][i] * U[j][k];
+            }
+            x[j][i] = round(e / U.at(i, i) * r) / r;
+        }
+    }
+
+    return x;
+}
+
+double conditionNumber(const Matrix &mx) {
+    return norm(mx) * norm(inverse(mx));
+}
 
 #endif

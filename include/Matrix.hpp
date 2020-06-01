@@ -29,6 +29,7 @@ Matrix &randomMatrix(int, int);
 Matrix &transpose(const Matrix &);
 Matrix &cholesky(const Matrix &);
 Matrix &inverse(const Matrix &);
+Matrix &choleskyInverse(const Matrix &, int = 10000000);
 double conditionNumber(const Matrix &);
 double norm(const Matrix &);
 #endif
